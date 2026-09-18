@@ -1,12 +1,13 @@
 import streamlit as st
 import pandas as pd
-import pickle
-
+import joblib
+from pathlib import Path
 # -----------------------------
 # Load trained model
 # -----------------------------
-with open("AC_Bill.pkl", "rb") as file:
-    model = pickle.load(file)
+
+modelpath = Path(__file__).parent / "AC_Bill.pkl"
+model = joblib.load(modelpath)
 
 # -----------------------------
 # Streamlit App
