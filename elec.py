@@ -36,9 +36,7 @@ if st.button("Predict Electricity Bill"):
 
     # Convert input into DataFrame
     input_data = pd.DataFrame(
-        [[ac_units]],
-        columns=["AC_Units"]
-    )
+       {"AC_Units": [ac_units] }   )
 
     # Make prediction
     prediction = model.predict(input_data)[0]
