@@ -2,12 +2,15 @@ import streamlit as st
 import pandas as pd
 import joblib
 from pathlib import Path
+from sklearn.preprocessing import PolynomialFeatures
+
 # -----------------------------
 # Load trained model
 # -----------------------------
 
 modelpath = Path(__file__).parent / "AC_Bill.pkl"
 model = joblib.load(modelpath)
+poly = PolynomialFeatures(degree=2)
 
 # -----------------------------
 # Streamlit App
@@ -27,7 +30,7 @@ st.write("Enter the AC units to predict the electricity bill.")
 ac_units = st.number_input(
     "Enter AC Units",
     min_value=0,
-    max_value=500,
+    max_value=150,
     value=50,
     step=1
 )
@@ -35,11 +38,13 @@ ac_units = st.number_input(
 if st.button("Predict Electricity Bill"):
 
     # Convert input into DataFrame
-    input_data = pd.DataFrame(
-       {"AC_Units": [ac_units] }   )
+    input_data = pd.DataFrame({"AC_Units": [ac_units]})
+
+    # Transform features using PolynomialFeatures (degree 2)
+    input_poly = poly.fit_transform(input_data)
 
     # Make prediction
-    prediction = model.predict(input_data)[0]
+    prediction = model.predict(input_poly)[0]
 
     # Display result
     st.success(
